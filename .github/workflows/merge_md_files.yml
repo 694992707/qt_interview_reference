@@ -1,7 +1,7 @@
 name: Merge Markdown Files
 
 on:
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:
 
 jobs:
   merge-md-files:
@@ -13,21 +13,14 @@ jobs:
 
       - name: Find and merge all .md files by order
         run: |
-          # Find all .md files, sort by name, and merge into merged.md if any exist
-          md_files=$(find . -name "*.md" | sort)
-          if [ -z "$md_files" ]; then
-            echo "No markdown files found."
-            exit 0
-          else
-            # Wrap file paths in quotes to handle spaces or special characters
-            find . -name "*.md" | sort | while read file; do
-              cat "$file" >> merged.md
-            done
-            echo "Markdown files merged successfully."
-          fi
+          # 使用find查找.md文件，并用while循环逐行读取
+          find . -name "*.md" | sort | while IFS= read -r file; do
+            # 使用双引号包裹文件名，确保文件名中的空格和特殊字符被正确处理
+            cat "$file" >> merged.md
+          done
 
       - name: Display merged file
-        run: cat merged.md  # Display merged file content (optional)
+        run: cat merged.md  # 可选步骤，显示合并后的内容
 
       - name: Commit merged file
         run: |
