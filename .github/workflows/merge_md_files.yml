@@ -11,16 +11,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Find and merge all .md files by order
+      - name: Find and merge all .md files by natural order
         run: |
-          # 使用find查找.md文件，并用while循环逐行读取
-          find . -name "*.md" | sort | while IFS= read -r file; do
-            # 使用双引号包裹文件名，确保文件名中的空格和特殊字符被正确处理
+          # 使用自然排序，确保数字按预期顺序排列
+          find . -name "*.md" | sort -V | while IFS= read -r file; do
             cat "$file" >> merged.md
           done
 
       - name: Display merged file
-        run: cat merged.md  # 可选步骤，显示合并后的内容
+        run: cat merged.md
 
       - name: Commit merged file
         run: |
