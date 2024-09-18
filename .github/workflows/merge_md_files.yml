@@ -1,0 +1,28 @@
+name: Merge Markdown Files
+
+on:
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  merge-md-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Find and merge all .md files by order
+        run: |
+          # 查找所有 .md 文件，并按字母顺序排序，合并成一个文件
+          find . -name "*.md" | sort | xargs cat > merged.md
+
+      - name: Display merged file
+        run: cat merged.md  # 仅用于显示合并结果，可选步骤
+
+      - name: Commit merged file
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add merged.md
+          git commit -m "Merged all markdown files"
+          git push
