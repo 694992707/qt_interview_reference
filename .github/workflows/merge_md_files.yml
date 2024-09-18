@@ -1,7 +1,7 @@
 name: Merge Markdown Files
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   merge-md-files:
@@ -19,7 +19,10 @@ jobs:
             echo "No markdown files found."
             exit 0
           else
-            cat $md_files > merged.md
+            # Wrap file paths in quotes to handle spaces or special characters
+            find . -name "*.md" | sort | while read file; do
+              cat "$file" >> merged.md
+            done
             echo "Markdown files merged successfully."
           fi
 
