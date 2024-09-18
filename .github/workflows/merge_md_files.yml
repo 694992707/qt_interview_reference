@@ -15,8 +15,9 @@ jobs:
         run: |
           # 使用自然排序，确保数字按预期顺序排列
           find . -name "*.md" | sort -V | while IFS= read -r file; do
-            cat "$file" >> merged.md
+            cat "$file" >> temp_merged.md
           done
+          mv temp_merged.md merged.md
 
       - name: Display merged file
         run: cat merged.md
